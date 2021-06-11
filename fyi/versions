@@ -1,0 +1,37 @@
+File: semgrep-grammars/src/tree-sitter-hack/LICENSE
+Git repo name: tree-sitter-hack
+Latest commit in repo: 9b4c90e2400704935499afd4b428b7411366d402
+Last change in file:
+  commit 9b4c90e2400704935499afd4b428b7411366d402
+  Author: Antonio de Jesus Ochoa Solano <antoniodejesusochoasolano@gmail.com>
+  Date:   Tue Sep 29 03:17:02 2020 -0700
+  
+      Empty list args, variadic no-arg function, and
+      
+      use statements can have a trailing comma.
+---
+File: semgrep-grammars/src/tree-sitter-hack/grammar.js
+Git repo name: tree-sitter-hack
+Latest commit in repo: 9b4c90e2400704935499afd4b428b7411366d402
+Last change in file:
+  commit 9b4c90e2400704935499afd4b428b7411366d402
+  Author: Antonio de Jesus Ochoa Solano <antoniodejesusochoasolano@gmail.com>
+  Date:   Tue Sep 29 03:17:02 2020 -0700
+  
+      Empty list args, variadic no-arg function, and
+      
+      use statements can have a trailing comma.
+---
+File: semgrep-grammars/src/semgrep-hack/grammar.js
+Git repo name: ocaml-tree-sitter
+Latest commit in repo: a1ea914eb6f4914b09a6e2f334890db6b7e0491f
+Last change in file:
+  commit 78977421c3f4ac3bf13d5762cfe3850274733010
+  Author: Martin Jambon <martin@r2c.dev>
+  Date:   Fri Jun 4 23:32:23 2021 -0700
+  
+      Set up support for Hack. This takes care of the mismatch between the npm
+      package name and the grammar name. Unfortunately, we're getting
+      conflicts in the grammar when running 'tree-sitter generate' over
+      grammar.json after the 'simplify-grammar' pass.
+---
