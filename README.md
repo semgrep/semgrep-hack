@@ -1,2 +1,5 @@
 # semgrep-hack
-generated hack (hacklang) parser for semgrep
+
+Generated hack parser code for semgrep.
+
+[Instructions for updating this repo](https://github.com/returntocorp/ocaml-tree-sitter/blob/master/doc/release.md)
