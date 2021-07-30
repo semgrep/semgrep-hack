@@ -8,10 +8,34 @@
 open! Sexplib.Conv
 open Tree_sitter_run
 
-type type_modifier = [
-    `AT of Token.t (* "@" *)
-  | `QMARK of Token.t (* "?" *)
-  | `TILDE of Token.t (* "~" *)
+type heredoc_start = Token.t
+[@@deriving sexp_of]
+
+type identifier =
+  Token.t (* pattern [a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]* *)
+[@@deriving sexp_of]
+
+type variable = Token.t
+[@@deriving sexp_of]
+
+type heredoc_end = Token.t
+[@@deriving sexp_of]
+
+type tok_lcurldollar_pat_0e8e4b6 = Token.t
+[@@deriving sexp_of]
+
+type use_type = [
+    `Name of Token.t (* "namespace" *)
+  | `Func of Token.t (* "function" *)
+  | `Type of Token.t (* "type" *)
+  | `Const of Token.t (* "const" *)
+]
+[@@deriving sexp_of]
+
+type visibility_modifier = [
+    `Public of Token.t (* "public" *)
+  | `Prot of Token.t (* "protected" *)
+  | `Priv of Token.t (* "private" *)
 ]
 [@@deriving sexp_of]
 
@@ -19,11 +43,26 @@ type xhp_category_identifier =
   Token.t (* pattern %[a-zA-Z_][a-zA-Z0-9_]*([-:][a-zA-Z0-9_]+)* *)
 [@@deriving sexp_of]
 
-type heredoc_start = Token.t
+type xhp_comment = Token.t
 [@@deriving sexp_of]
 
-type identifier =
-  Token.t (* pattern [a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]* *)
+type float_ = Token.t
+[@@deriving sexp_of]
+
+type pat_466b599 = Token.t (* pattern function\s*\( *)
+[@@deriving sexp_of]
+
+type xhp_identifier =
+  Token.t (* pattern [a-zA-Z_][a-zA-Z0-9_]*([-:][a-zA-Z0-9_]+)* *)
+[@@deriving sexp_of]
+
+type pat_b6fe07e = Token.t (* pattern <\?[hH][hH] *)
+[@@deriving sexp_of]
+
+type heredoc_body = Token.t
+[@@deriving sexp_of]
+
+type integer = Token.t
 [@@deriving sexp_of]
 
 type scope_identifier = [
@@ -33,26 +72,7 @@ type scope_identifier = [
 ]
 [@@deriving sexp_of]
 
-type heredoc_end = Token.t
-[@@deriving sexp_of]
-
-type variable = Token.t
-[@@deriving sexp_of]
-
-type heredoc_body = Token.t
-[@@deriving sexp_of]
-
-type xhp_identifier =
-  Token.t (* pattern [a-zA-Z_][a-zA-Z0-9_]*([-:][a-zA-Z0-9_]+)* *)
-[@@deriving sexp_of]
-
-type integer = Token.t
-[@@deriving sexp_of]
-
-type float_ = Token.t
-[@@deriving sexp_of]
-
-type pat_b6fe07e = Token.t (* pattern <\?[hH][hH] *)
+type xhp_string = Token.t
 [@@deriving sexp_of]
 
 type xhp_class_identifier =
@@ -66,12 +86,6 @@ type null = [
 ]
 [@@deriving sexp_of]
 
-type string_ = Token.t
-[@@deriving sexp_of]
-
-type xhp_string = Token.t (* pattern [^<]+ *)
-[@@deriving sexp_of]
-
 type collection_type = [
     `Array of Token.t (* "array" *)
   | `Varray of Token.t (* "varray" *)
@@ -82,14 +96,11 @@ type collection_type = [
 ]
 [@@deriving sexp_of]
 
-type true_ = [
-    `True_b326b50 of Token.t (* "true" *)
-  | `True_f827cf4 of Token.t (* "True" *)
-  | `TRUE of Token.t (* "TRUE" *)
+type type_modifier = [
+    `AT of Token.t (* "@" *)
+  | `QMARK of Token.t (* "?" *)
+  | `TILDE of Token.t (* "~" *)
 ]
-[@@deriving sexp_of]
-
-type xhp_comment = Token.t (* pattern <!--(.|[\n\r])*--> *)
 [@@deriving sexp_of]
 
 type false_ = [
@@ -99,21 +110,13 @@ type false_ = [
 ]
 [@@deriving sexp_of]
 
-type tok_LCURLDOLLAR_pat_0e8e4b6 = Token.t
+type string_ = Token.t
 [@@deriving sexp_of]
 
-type visibility_modifier = [
-    `Public of Token.t (* "public" *)
-  | `Prot of Token.t (* "protected" *)
-  | `Priv of Token.t (* "private" *)
-]
-[@@deriving sexp_of]
-
-type use_type = [
-    `Name of Token.t (* "namespace" *)
-  | `Func of Token.t (* "function" *)
-  | `Type of Token.t (* "type" *)
-  | `Const of Token.t (* "const" *)
+type true_ = [
+    `True_b326b50 of Token.t (* "true" *)
+  | `True_f827cf4 of Token.t (* "True" *)
+  | `TRUE of Token.t (* "TRUE" *)
 ]
 [@@deriving sexp_of]
 
@@ -121,6 +124,19 @@ type anon_choice_QMARKDASHGT_ce9cc19 = [
     `QMARKDASHGT of Token.t (* "?->" *)
   | `DASHGT of Token.t (* "->" *)
 ]
+[@@deriving sexp_of]
+
+type trait_alias_clause = (
+    identifier (*tok*)
+  * Token.t (* "as" *)
+  * [
+        `Visi_modi_opt_id of (visibility_modifier * identifier (*tok*) option)
+      | `Opt_visi_modi_id of (
+            visibility_modifier option
+          * identifier (*tok*)
+        )
+    ]
+)
 [@@deriving sexp_of]
 
 type xhp_category_declaration = (
@@ -132,9 +148,19 @@ type xhp_category_declaration = (
 )
 [@@deriving sexp_of]
 
-type xhp_close = (
-    Token.t (* "</" *) * xhp_identifier (*tok*) * Token.t (* ">" *)
-)
+type qualified_identifier = [
+    `Opt_id_rep1_back_id of (
+        identifier (*tok*) option
+      * (Token.t (* "\\" *) * identifier (*tok*)) list (* one or more *)
+    )
+  | `Id of identifier (*tok*)
+]
+[@@deriving sexp_of]
+
+type xhp_identifier_ = [
+    `Xhp_id of xhp_identifier (*tok*)
+  | `Xhp_class_id of xhp_class_identifier (*tok*)
+]
 [@@deriving sexp_of]
 
 type xhp_attribute_expression = [
@@ -178,15 +204,23 @@ type primitive_type = [
 ]
 [@@deriving sexp_of]
 
-type anon_choice_str_d42aa42 = [
-    `Str of string_ (*tok*)
-  | `Int of integer (*tok*)
+type member_modifier = [
+    `Visi_modi of visibility_modifier
+  | `Static_modi of Token.t (* "static" *)
+  | `Abst_modi of Token.t (* "abstract" *)
+  | `Final_modi of Token.t (* "final" *)
 ]
 [@@deriving sexp_of]
 
 type class_modifier = [
     `Abst_modi of Token.t (* "abstract" *)
   | `Final_modi of Token.t (* "final" *)
+]
+[@@deriving sexp_of]
+
+type anon_choice_str_d42aa42 = [
+    `Str of string_ (*tok*)
+  | `Int of integer (*tok*)
 ]
 [@@deriving sexp_of]
 
@@ -198,64 +232,6 @@ type literal = [
   | `False of false_
   | `Null of null
 ]
-[@@deriving sexp_of]
-
-type qualified_identifier = [
-    `Opt_id_rep1_back_id of (
-        identifier (*tok*) option
-      * (Token.t (* "\\" *) * identifier (*tok*)) list (* one or more *)
-    )
-  | `Id of identifier (*tok*)
-]
-[@@deriving sexp_of]
-
-type trait_alias_clause = (
-    identifier (*tok*)
-  * Token.t (* "as" *)
-  * [
-        `Visi_modi_opt_id of (visibility_modifier * identifier (*tok*) option)
-      | `Opt_visi_modi_id of (
-            visibility_modifier option
-          * identifier (*tok*)
-        )
-    ]
-)
-[@@deriving sexp_of]
-
-type member_modifier = [
-    `Visi_modi of visibility_modifier
-  | `Static_modi of Token.t (* "static" *)
-  | `Abst_modi of Token.t (* "abstract" *)
-  | `Final_modi of Token.t (* "final" *)
-]
-[@@deriving sexp_of]
-
-type xhp_children_declaration = (
-    Token.t (* "children" *)
-  * xhp_attribute_expression
-  * (Token.t (* "," *) * xhp_attribute_expression) list (* zero or more *)
-  * Token.t (* ";" *)
-)
-[@@deriving sexp_of]
-
-type keyword = [
-    `Type of Token.t (* "type" *)
-  | `Newt of Token.t (* "newtype" *)
-  | `Shape of Token.t (* "shape" *)
-  | `Tupe of Token.t (* "tupe" *)
-  | `Choice_bool of primitive_type
-  | `Choice_array of collection_type
-]
-[@@deriving sexp_of]
-
-type xhp_enum_type = (
-    Token.t (* "enum" *)
-  * Token.t (* "{" *)
-  * anon_choice_str_d42aa42
-  * (Token.t (* "," *) * anon_choice_str_d42aa42) list (* zero or more *)
-  * Token.t (* "," *) option
-  * Token.t (* "}" *)
-)
 [@@deriving sexp_of]
 
 type namespace_identifier = [
@@ -281,6 +257,53 @@ type trait_select_clause = (
 )
 [@@deriving sexp_of]
 
+type xhp_close = (Token.t (* "</" *) * xhp_identifier_ * Token.t (* ">" *))
+[@@deriving sexp_of]
+
+type xhp_children_declaration = (
+    Token.t (* "children" *)
+  * xhp_attribute_expression
+  * (Token.t (* "," *) * xhp_attribute_expression) list (* zero or more *)
+  * Token.t (* ";" *)
+)
+[@@deriving sexp_of]
+
+type keyword = [
+    `Type of Token.t (* "type" *)
+  | `Newt of Token.t (* "newtype" *)
+  | `Shape of Token.t (* "shape" *)
+  | `Tupe of Token.t (* "tupe" *)
+  | `Clone of Token.t (* "clone" *)
+  | `New of Token.t (* "new" *)
+  | `Print of Token.t (* "print" *)
+  | `Choice_bool of primitive_type
+  | `Choice_array of collection_type
+]
+[@@deriving sexp_of]
+
+type xhp_enum_type = (
+    Token.t (* "enum" *)
+  * Token.t (* "{" *)
+  * anon_choice_str_d42aa42
+  * (Token.t (* "," *) * anon_choice_str_d42aa42) list (* zero or more *)
+  * Token.t (* "," *) option
+  * Token.t (* "}" *)
+)
+[@@deriving sexp_of]
+
+type scoped_identifier = (
+    [
+        `Qual_id of qualified_identifier
+      | `Var of variable (*tok*)
+      | `Scope_id of scope_identifier
+      | `Choice_xhp_id of xhp_identifier_
+      | `Pipe_var of Token.t (* "$$" *)
+    ]
+  * Token.t (* "::" *)
+  * [ `Id of identifier (*tok*) | `Var of variable (*tok*) ]
+)
+[@@deriving sexp_of]
+
 type anonymous_function_use_clause = (
     Token.t (* "use" *)
   * Token.t (* "(" *)
@@ -291,27 +314,17 @@ type anonymous_function_use_clause = (
 )
 [@@deriving sexp_of]
 
-type scoped_identifier = (
-    [
-        `Qual_id of qualified_identifier
-      | `Var of variable (*tok*)
-      | `Scope_id of scope_identifier
-      | `Xhp_class_id of xhp_class_identifier (*tok*)
-      | `Pipe_var of Token.t (* "$$" *)
-    ]
-  * Token.t (* "::" *)
-  * [ `Id of identifier (*tok*) | `Var of variable (*tok*) ]
-)
-[@@deriving sexp_of]
-
-type anon_choice_id_0c70504 = [ `Id of identifier (*tok*) | `Kw of keyword ]
-[@@deriving sexp_of]
-
 type use_clause = (
     use_type option
   * namespace_identifier
   * (Token.t (* "as" *) * identifier (*tok*)) option
 )
+[@@deriving sexp_of]
+
+type anon_choice_id_0f53960 = [
+    `Id of identifier (*tok*)
+  | `Choice_type of keyword
+]
 [@@deriving sexp_of]
 
 type anon_choice_comp_stmt_c6c6bb4 = [
@@ -363,6 +376,12 @@ and arguments = (
     )
       option
   * Token.t (* ")" *)
+)
+
+and as_expression = (
+    expression
+  * [ `As of Token.t (* as_ *) | `QMARKas of Token.t (* "?as" *) ]
+  * type_
 )
 
 and attribute_modifier = (
@@ -418,6 +437,8 @@ and binary_expression = [
   | `Exp_STARSTAREQ_exp of (expression * Token.t (* "**=" *) * expression)
 ]
 
+and braced_expression = (Token.t (* "{" *) * expression * Token.t (* "}" *))
+
 and call_expression = (
     [ `Exp of expression | `Choice_array of collection_type ]
   * type_arguments option
@@ -439,7 +460,7 @@ and class_const_declaration = (
 )
 
 and class_const_declarator = (
-    anon_choice_id_0c70504
+    anon_choice_id_0f53960
   * (Token.t (* "=" *) * expression) option
 )
 
@@ -450,7 +471,7 @@ and compound_statement = (
 )
 
 and const_declarator = (
-    anon_choice_id_0c70504 * Token.t (* "=" *) * expression
+    anon_choice_id_0f53960 * Token.t (* "=" *) * expression
 )
 
 and declaration = [
@@ -463,11 +484,9 @@ and declaration = [
         attribute_modifier option
       * class_modifier option
       * class_modifier option
+      * Token.t (* "xhp" *) option
       * Token.t (* "class" *)
-      * [
-            `Id of identifier (*tok*)
-          | `Xhp_class_id of xhp_class_identifier (*tok*)
-        ]
+      * [ `Id of identifier (*tok*) | `Choice_xhp_id of xhp_identifier_ ]
       * type_parameters option
       * extends_clause option
       * implements_clause option
@@ -538,7 +557,7 @@ and embedded_brace_expression = (
 )
 
 and embedded_brace_expression_ = [
-    `Tok_LCURLDOLLAR_pat_0e8e4b6 of tok_LCURLDOLLAR_pat_0e8e4b6 (*tok*)
+    `Tok_lcur_pat_0e8e4b6 of tok_lcurldollar_pat_0e8e4b6 (*tok*)
   | `Embe_brace_call_exp of (embedded_brace_expression_ * arguments)
   | `Embe_brace_subs_exp of (
         embedded_brace_expression_
@@ -614,11 +633,7 @@ and expression = [
       * [ `PLUSPLUS of Token.t (* "++" *) | `DASHDASH of Token.t (* "--" *) ]
     )
   | `Is_exp of (expression * Token.t (* "is" *) * type_)
-  | `As_exp of (
-        expression
-      * [ `As of Token.t (* as_ *) | `QMARKas of Token.t (* "?as" *) ]
-      * type_
-    )
+  | `As_exp of as_expression
   | `Awai_exp of (Token.t (* "async" *) * compound_statement)
   | `Yield_exp of (Token.t (* "yield" *) * anon_choice_exp_1701d0a)
   | `Cast_exp of (
@@ -812,7 +827,13 @@ and require_implements_clause = (
 )
 
 and selection_expression = (
-    variablish * anon_choice_QMARKDASHGT_ce9cc19 * variablish
+    [ `Choice_var of variablish | `As_exp of as_expression ]
+  * anon_choice_QMARKDASHGT_ce9cc19
+  * [
+        `Choice_var of variablish
+      | `Braced_exp of braced_expression
+      | `Choice_type of keyword
+    ]
 )
 
 and statement = [
@@ -928,8 +949,8 @@ and statement = [
   | `Try_stmt of (
         Token.t (* "try" *)
       * compound_statement
+      * catch_clause list (* zero or more *)
       * [ `Catch_clause of catch_clause | `Fina_clause of finally_clause ]
-          list (* one or more *)
     )
   | `Conc_stmt of (Token.t (* "concurrent" *) * compound_statement)
   | `Using_stmt of (
@@ -989,7 +1010,7 @@ and type_ = [
             `Choice_bool of primitive_type
           | `Qual_id of qualified_identifier
           | `Choice_array of collection_type
-          | `Xhp_class_id of xhp_class_identifier (*tok*)
+          | `Choice_xhp_id of xhp_identifier_
         ]
       * type_arguments option
     )
@@ -1010,8 +1031,7 @@ and type_ = [
   | `Func_type_spec of (
         type_modifier list (* zero or more *)
       * Token.t (* "(" *)
-      * Token.t (* "function" *)
-      * Token.t (* "(" *)
+      * pat_466b599 (*tok*)
       * (
             Token.t (* "inout" *) option
           * type_
@@ -1108,7 +1128,7 @@ and variablish = [
   | `Scoped_id of scoped_identifier
   | `Scope_id of scope_identifier
   | `Sele_exp of selection_expression
-  | `Xhp_class_id of xhp_class_identifier (*tok*)
+  | `Choice_xhp_id of xhp_identifier_
 ]
 
 and where_clause = (
@@ -1130,13 +1150,10 @@ and xhp_attribute = [
     `Xhp_id_EQ_choice_str of (
         xhp_identifier (*tok*)
       * Token.t (* "=" *)
-      * [
-            `Str of string_ (*tok*)
-          | `Xhp_braced_exp of xhp_braced_expression
-        ]
+      * [ `Str of string_ (*tok*) | `Braced_exp of braced_expression ]
     )
-  | `Choice_xhp_braced_exp of [
-        `Xhp_braced_exp of xhp_braced_expression
+  | `Choice_braced_exp of [
+        `Braced_exp of braced_expression
       | `Xhp_spread_exp of xhp_spread_expression
     ]
 ]
@@ -1146,10 +1163,6 @@ and xhp_attribute_declaration = (
   * xhp_class_attribute
   * (Token.t (* "," *) * xhp_class_attribute) list (* zero or more *)
   * Token.t (* ";" *)
-)
-
-and xhp_braced_expression = (
-    Token.t (* "{" *) * expression * Token.t (* "}" *)
 )
 
 and xhp_class_attribute = (
@@ -1166,7 +1179,7 @@ and xhp_class_attribute = (
 and xhp_expression = [
     `Xhp_open_close of (
         Token.t (* "<" *)
-      * xhp_identifier (*tok*)
+      * xhp_identifier_
       * xhp_attribute list (* zero or more *)
       * Token.t (* "/>" *)
     )
@@ -1175,7 +1188,7 @@ and xhp_expression = [
       * [
             `Xhp_str of xhp_string (*tok*)
           | `Xhp_comm of xhp_comment (*tok*)
-          | `Xhp_braced_exp of xhp_braced_expression
+          | `Braced_exp of braced_expression
           | `Xhp_exp of xhp_expression
         ]
           list (* zero or more *)
@@ -1185,7 +1198,7 @@ and xhp_expression = [
 
 and xhp_open = (
     Token.t (* "<" *)
-  * xhp_identifier (*tok*)
+  * xhp_identifier_
   * xhp_attribute list (* zero or more *)
   * Token.t (* ">" *)
 )
@@ -1201,19 +1214,19 @@ type script = (
 )
 [@@deriving sexp_of]
 
-type variadic_modifier (* inlined *) = Token.t (* "..." *)
-[@@deriving sexp_of]
-
-type pipe_variable (* inlined *) = Token.t (* "$$" *)
-[@@deriving sexp_of]
-
 type final_modifier (* inlined *) = Token.t (* "final" *)
+[@@deriving sexp_of]
+
+type async_modifier (* inlined *) = Token.t (* "async" *)
 [@@deriving sexp_of]
 
 type static_modifier (* inlined *) = Token.t (* "static" *)
 [@@deriving sexp_of]
 
-type async_modifier (* inlined *) = Token.t (* "async" *)
+type empty_statement (* inlined *) = Token.t (* ";" *)
+[@@deriving sexp_of]
+
+type backslash (* inlined *) = Token.t (* "\\" *)
 [@@deriving sexp_of]
 
 type comment (* inlined *) = Token.t
@@ -1222,13 +1235,16 @@ type comment (* inlined *) = Token.t
 type abstract_modifier (* inlined *) = Token.t (* "abstract" *)
 [@@deriving sexp_of]
 
-type empty_statement (* inlined *) = Token.t (* ";" *)
+type xhp_modifier (* inlined *) = Token.t (* "xhp" *)
 [@@deriving sexp_of]
 
 type await_modifier (* inlined *) = Token.t (* "await" *)
 [@@deriving sexp_of]
 
-type backslash (* inlined *) = Token.t (* "\\" *)
+type variadic_modifier (* inlined *) = Token.t (* "..." *)
+[@@deriving sexp_of]
+
+type pipe_variable (* inlined *) = Token.t (* "$$" *)
 [@@deriving sexp_of]
 
 type inout_modifier (* inlined *) = Token.t (* "inout" *)
@@ -1325,13 +1341,6 @@ type array_ (* inlined *) = (
 )
 [@@deriving sexp_of]
 
-type as_expression (* inlined *) = (
-    expression
-  * [ `As of Token.t (* as_ *) | `QMARKas of Token.t (* "?as" *) ]
-  * type_
-)
-[@@deriving sexp_of]
-
 type awaitable_expression (* inlined *) = (
     Token.t (* "async" *) * compound_statement
 )
@@ -1362,11 +1371,9 @@ type class_declaration (* inlined *) = (
     attribute_modifier option
   * class_modifier option
   * class_modifier option
+  * Token.t (* "xhp" *) option
   * Token.t (* "class" *)
-  * [
-        `Id of identifier (*tok*)
-      | `Xhp_class_id of xhp_class_identifier (*tok*)
-    ]
+  * [ `Id of identifier (*tok*) | `Choice_xhp_id of xhp_identifier_ ]
   * type_parameters option
   * extends_clause option
   * implements_clause option
@@ -1498,8 +1505,7 @@ type function_declaration (* inlined *) = (
 type function_type_specifier (* inlined *) = (
     type_modifier list (* zero or more *)
   * Token.t (* "(" *)
-  * Token.t (* "function" *)
-  * Token.t (* "(" *)
+  * pat_466b599 (*tok*)
   * (
         Token.t (* "inout" *) option
       * type_
@@ -1713,8 +1719,8 @@ type trait_declaration (* inlined *) = (
 type try_statement (* inlined *) = (
     Token.t (* "try" *)
   * compound_statement
+  * catch_clause list (* zero or more *)
   * [ `Catch_clause of catch_clause | `Fina_clause of finally_clause ]
-      list (* one or more *)
 )
 [@@deriving sexp_of]
 
@@ -1747,7 +1753,7 @@ type type_specifier (* inlined *) = (
         `Choice_bool of primitive_type
       | `Qual_id of qualified_identifier
       | `Choice_array of collection_type
-      | `Xhp_class_id of xhp_class_identifier (*tok*)
+      | `Choice_xhp_id of xhp_identifier_
     ]
   * type_arguments option
 )
@@ -1786,7 +1792,7 @@ type while_statement (* inlined *) = (
 
 type xhp_open_close (* inlined *) = (
     Token.t (* "<" *)
-  * xhp_identifier (*tok*)
+  * xhp_identifier_
   * xhp_attribute list (* zero or more *)
   * Token.t (* "/>" *)
 )

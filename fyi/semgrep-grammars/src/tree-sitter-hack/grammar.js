@@ -57,6 +57,9 @@ const rules = {
       'newtype',
       'shape',
       'tupe',
+      'clone',
+      'new',
+      'print',
       $._primitive_type,
       $._collection_type,
     ),
@@ -75,7 +78,7 @@ const rules = {
         $.qualified_identifier,
         $.variable,
         $.scope_identifier,
-        $.xhp_class_identifier,
+        $._xhp_identifier,
         $.pipe_variable,
       ),
       '::',
@@ -96,7 +99,7 @@ const rules = {
       $.scoped_identifier,
       $.scope_identifier,
       $.selection_expression,
-      $.xhp_class_identifier,
+      $._xhp_identifier,
     ),
 
   _statement: $ =>
@@ -171,6 +174,8 @@ const rules = {
         $._variablish,
       ),
     ),
+
+  braced_expression: $ => seq('{', $._expression, '}'),
 
   _expression: $ =>
     choice(
@@ -330,7 +335,8 @@ const rules = {
     seq(
       'try',
       field('body', $.compound_statement),
-      choice.rep1($.catch_clause, $.finally_clause),
+      rep($.catch_clause),
+      choice($.catch_clause, $.finally_clause),
     ),
 
   catch_clause: $ =>
@@ -425,7 +431,7 @@ const rules = {
         $._primitive_type,
         $.qualified_identifier,
         $._collection_type,
-        $.xhp_class_identifier,
+        $._xhp_identifier,
       ),
       opt($.type_arguments),
     ),
@@ -444,8 +450,7 @@ const rules = {
     seq(
       rep($._type_modifier),
       '(',
-      'function',
-      '(',
+      /function\s*\(/,
       com.opt(opt($.inout_modifier), $._type, opt($.variadic_modifier), ','),
       ')',
       ':',
@@ -717,9 +722,9 @@ const rules = {
   selection_expression: $ =>
     prec.select(
       seq(
-        $._variablish,
+        choice($._variablish, $.as_expression),
         field('selection_operator', choice('?->', '->')),
-        $._variablish,
+        choice($._variablish, $.braced_expression, alias($._keyword, $.identifier)),
       ),
     ),
 
@@ -798,8 +803,9 @@ const rules = {
       opt($.attribute_modifier),
       opt($._class_modifier),
       opt($._class_modifier),
+      opt($.xhp_modifier),
       'class',
-      field('name', choice($.identifier, $.xhp_class_identifier)),
+      field('name', choice($.identifier, $._xhp_identifier)),
       opt($.type_parameters),
       opt($.extends_clause),
       opt($.implements_clause),
@@ -974,6 +980,8 @@ const rules = {
 
   abstract_modifier: $ => 'abstract',
 
+  xhp_modifier: $ => 'xhp',
+
   static_modifier: $ => 'static',
 
   visibility_modifier: $ => choice('public', 'protected', 'private'),
@@ -995,6 +1003,8 @@ const rules = {
 
   xhp_class_identifier: $ => /:[a-zA-Z_][a-zA-Z0-9_]*([-:][a-zA-Z0-9_]+)*/,
 
+  _xhp_identifier: $ => choice($.xhp_identifier, $.xhp_class_identifier),
+
   xhp_category_identifier: $ => /%[a-zA-Z_][a-zA-Z0-9_]*([-:][a-zA-Z0-9_]+)*/,
 
   xhp_expression: $ =>
@@ -1006,7 +1016,7 @@ const rules = {
           choice(
             $.xhp_string,
             $.xhp_comment,
-            $.xhp_braced_expression,
+            $.braced_expression,
             $.xhp_expression,
           ),
         ),
@@ -1014,23 +1024,21 @@ const rules = {
       ),
     ),
 
-  xhp_comment: $ => /<!--(.|[\n\r])*-->/,
+  xhp_comment: $ => token(seq('<!--', /(-?>)?([^>]|[^-]>|[^-]->)*/, '-->')),
 
-  xhp_string: $ => /[^<]+/,
+  xhp_string: $ => token(prec(1, /[^<{]+/)),
 
-  xhp_open: $ => seq('<', $.xhp_identifier, rep($.xhp_attribute), '>'),
+  xhp_open: $ => seq('<', $._xhp_identifier, rep($.xhp_attribute), '>'),
 
-  xhp_open_close: $ => seq('<', $.xhp_identifier, rep($.xhp_attribute), '/>'),
+  xhp_open_close: $ => seq('<', $._xhp_identifier, rep($.xhp_attribute), '/>'),
 
-  xhp_close: $ => seq('</', $.xhp_identifier, '>'),
+  xhp_close: $ => seq('</', $._xhp_identifier, '>'),
 
   xhp_attribute: $ =>
     choice(
-      seq($.xhp_identifier, '=', choice($.string, $.xhp_braced_expression)),
-      choice($.xhp_braced_expression, $.xhp_spread_expression),
+      seq($.xhp_identifier, '=', choice($.string, $.braced_expression)),
+      choice($.braced_expression, $.xhp_spread_expression),
     ),
-
-  xhp_braced_expression: $ => seq('{', $._expression, '}'),
 
   xhp_spread_expression: $ => seq('{', '...', $._expression, '}'),
 
@@ -1152,6 +1160,8 @@ module.exports = grammar({
     $._primitive_type,
     $._collection_type,
     $._xhp_attribute_expression,
+    $._keyword,
+    $._xhp_identifier,
   ],
 
   conflicts: $ => [
