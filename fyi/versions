@@ -1,6 +1,6 @@
 File: semgrep-grammars/src/tree-sitter-hack/LICENSE
 Git repo name: tree-sitter-hack
-Latest commit in repo: d9c3aa2d33ac549567278c6509219eb92626134b
+Latest commit in repo: 6f0bf4c09834707202ea0aef3090d880a49b39e7
 Last change in file:
   commit 22cc75a0f850cb496602c976be585cf5cd13b818
   Author: Antonio de Jesus Ochoa Solano <antoniodejesusochoasolano@gmail.com>
@@ -10,24 +10,29 @@ Last change in file:
 ---
 File: semgrep-grammars/src/tree-sitter-hack/grammar.js
 Git repo name: tree-sitter-hack
-Latest commit in repo: d9c3aa2d33ac549567278c6509219eb92626134b
+Latest commit in repo: 6f0bf4c09834707202ea0aef3090d880a49b39e7
 Last change in file:
-  commit 61c582d132fe150638b6315a5065f9690f11d656
+  commit fb6d23735499236459cb2b230ca142aa8ee61770
   Author: David Frankel <42774874+frankeld@users.noreply.github.com>
-  Date:   Tue Jul 27 20:23:18 2021 -0400
+  Date:   Mon Aug 2 12:56:32 2021 -0400
   
-      Separate catch and finally clause types (#22)
+      Improve XHP feature documentation and testing (#23)
+      
+      * Add deprecated XHP feature documentation and tests
+      
+      * Add XHP spread expression tests
+      
+      * Fixup spelling and formatting
+      
+      * Update xhp-spread.hack
 ---
 File: semgrep-grammars/src/semgrep-hack/grammar.js
 Git repo name: ocaml-tree-sitter-semgrep
-Latest commit in repo: 6a78256fe76cb8dfa4298cf441d2cf9ddf162ebb
+Latest commit in repo: 4e91844a54e62312a78caab73d2a7e09a514a175
 Last change in file:
-  commit b87fa78d4d0db194dc3c7b555b233ddd7847219a
-  Author: Martin Jambon <martin@r2c.dev>
-  Date:   Fri Jun 4 23:32:23 2021 -0700
+  commit a4f74751f629a6a9222d59d5a8696fd58ff1d142
+  Author: David Frankel <42774874+frankeld@users.noreply.github.com>
+  Date:   Tue Aug 10 17:12:58 2021 -0400
   
-      Set up support for Hack. This takes care of the mismatch between the npm
-      package name and the grammar name. Unfortunately, we're getting
-      conflicts in the grammar when running 'tree-sitter generate' over
-      grammar.json after the 'simplify-grammar' pass.
+      [Hack] Extend metavariables
 ---
