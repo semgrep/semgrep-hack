@@ -20,33 +20,6 @@ type heredoc_body = Token.t
 type semgrep_identifier = Token.t (* pattern \$[A-Z_][A-Z_0-9]* *)
 [@@deriving sexp_of]
 
-type variable = Token.t
-[@@deriving sexp_of]
-
-type pat_466b599 = Token.t (* pattern function\s*\( *)
-[@@deriving sexp_of]
-
-type xhp_class_identifier =
-  Token.t (* pattern :[a-zA-Z_][a-zA-Z0-9_]*([-:][a-zA-Z0-9_]+)* *)
-[@@deriving sexp_of]
-
-type xhp_category_identifier =
-  Token.t (* pattern %[a-zA-Z_][a-zA-Z0-9_]*([-:][a-zA-Z0-9_]+)* *)
-[@@deriving sexp_of]
-
-type false_ = [
-    `False_68934a3 of Token.t (* "false" *)
-  | `False_f8320b2 of Token.t (* "False" *)
-  | `FALSE of Token.t (* "FALSE" *)
-]
-[@@deriving sexp_of]
-
-type pat_b6fe07e = Token.t (* pattern <\?[hH][hH] *)
-[@@deriving sexp_of]
-
-type xhp_string = Token.t
-[@@deriving sexp_of]
-
 type true_ = [
     `True_b326b50 of Token.t (* "true" *)
   | `True_f827cf4 of Token.t (* "True" *)
@@ -54,11 +27,15 @@ type true_ = [
 ]
 [@@deriving sexp_of]
 
-type identifier =
-  Token.t (* pattern [a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]* *)
+type type_modifier = [
+    `AT of Token.t (* "@" *)
+  | `QMARK of Token.t (* "?" *)
+  | `TILDE of Token.t (* "~" *)
+]
 [@@deriving sexp_of]
 
-type tok_lcurldollar_pat_0e8e4b6 = Token.t
+type xhp_identifier =
+  Token.t (* pattern [a-zA-Z_][a-zA-Z0-9_]*([-:][a-zA-Z0-9_]+)* *)
 [@@deriving sexp_of]
 
 type use_type = [
@@ -69,7 +46,44 @@ type use_type = [
 ]
 [@@deriving sexp_of]
 
+type pat_466b599 = Token.t (* pattern function\s*\( *)
+[@@deriving sexp_of]
+
+type false_ = [
+    `False_68934a3 of Token.t (* "false" *)
+  | `False_f8320b2 of Token.t (* "False" *)
+  | `FALSE of Token.t (* "FALSE" *)
+]
+[@@deriving sexp_of]
+
+type variable = Token.t
+[@@deriving sexp_of]
+
+type xhp_category_identifier =
+  Token.t (* pattern %[a-zA-Z_][a-zA-Z0-9_]*([-:][a-zA-Z0-9_]+)* *)
+[@@deriving sexp_of]
+
+type pat_b6fe07e = Token.t (* pattern <\?[hH][hH] *)
+[@@deriving sexp_of]
+
+type visibility_modifier = [
+    `Public of Token.t (* "public" *)
+  | `Prot of Token.t (* "protected" *)
+  | `Priv of Token.t (* "private" *)
+]
+[@@deriving sexp_of]
+
+type identifier =
+  Token.t (* pattern [a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]* *)
+[@@deriving sexp_of]
+
 type string_ = Token.t
+[@@deriving sexp_of]
+
+type xhp_comment = Token.t
+[@@deriving sexp_of]
+
+type xhp_string = Token.t
 [@@deriving sexp_of]
 
 type float_ = Token.t
@@ -81,9 +95,6 @@ type integer = Token.t
 type heredoc_start_newline = Token.t
 [@@deriving sexp_of]
 
-type xhp_comment = Token.t
-[@@deriving sexp_of]
-
 type scope_identifier = [
     `Self of Token.t (* "self" *)
   | `Parent of Token.t (* "parent" *)
@@ -91,11 +102,8 @@ type scope_identifier = [
 ]
 [@@deriving sexp_of]
 
-type visibility_modifier = [
-    `Public of Token.t (* "public" *)
-  | `Prot of Token.t (* "protected" *)
-  | `Priv of Token.t (* "private" *)
-]
+type semgrep_variadic_identifier =
+  Token.t (* pattern \$\.\.\.[A-Z_][A-Z_0-9]* *)
 [@@deriving sexp_of]
 
 type collection_type = [
@@ -108,15 +116,11 @@ type collection_type = [
 ]
 [@@deriving sexp_of]
 
-type xhp_identifier =
-  Token.t (* pattern [a-zA-Z_][a-zA-Z0-9_]*([-:][a-zA-Z0-9_]+)* *)
+type tok_lcurldollar_pat_0e8e4b6 = Token.t
 [@@deriving sexp_of]
 
-type type_modifier = [
-    `AT of Token.t (* "@" *)
-  | `QMARK of Token.t (* "?" *)
-  | `TILDE of Token.t (* "~" *)
-]
+type xhp_class_identifier =
+  Token.t (* pattern :[a-zA-Z_][a-zA-Z0-9_]*([-:][a-zA-Z0-9_]+)* *)
 [@@deriving sexp_of]
 
 type null = [
@@ -150,6 +154,19 @@ type empty_statement = [
 ]
 [@@deriving sexp_of]
 
+type trait_alias_clause = (
+    identifier (*tok*)
+  * Token.t (* "as" *)
+  * [
+        `Visi_modi_opt_id of (visibility_modifier * identifier (*tok*) option)
+      | `Opt_visi_modi_id of (
+            visibility_modifier option
+          * identifier (*tok*)
+        )
+    ]
+)
+[@@deriving sexp_of]
+
 type semgrep_extended_identifier = [
     `Semg_id of semgrep_identifier (*tok*)
   | `Id of identifier (*tok*)
@@ -177,28 +194,17 @@ type anon_choice_str_d42aa42 = [
 ]
 [@@deriving sexp_of]
 
-type trait_alias_clause = (
-    identifier (*tok*)
-  * Token.t (* "as" *)
-  * [
-        `Visi_modi_opt_id of (visibility_modifier * identifier (*tok*) option)
-      | `Opt_visi_modi_id of (
-            visibility_modifier option
-          * identifier (*tok*)
-        )
-    ]
-)
+type member_modifier = [
+    `Visi_modi of visibility_modifier
+  | `Static_modi of Token.t (* "static" *)
+  | `Abst_modi of Token.t (* "abstract" *)
+  | `Final_modi of Token.t (* "final" *)
+]
 [@@deriving sexp_of]
 
 type class_modifier = [
     `Abst_modi of Token.t (* "abstract" *)
   | `Final_modi of Token.t (* "final" *)
-]
-[@@deriving sexp_of]
-
-type xhp_identifier_ = [
-    `Xhp_id of xhp_identifier (*tok*)
-  | `Xhp_class_id of xhp_class_identifier (*tok*)
 ]
 [@@deriving sexp_of]
 
@@ -228,6 +234,12 @@ type xhp_attribute_expression = [
 ]
 [@@deriving sexp_of]
 
+type xhp_identifier_ = [
+    `Xhp_id of xhp_identifier (*tok*)
+  | `Xhp_class_id of xhp_class_identifier (*tok*)
+]
+[@@deriving sexp_of]
+
 type primitive_type = [
     `Bool of Token.t (* "bool" *)
   | `Float of Token.t (* "float" *)
@@ -253,18 +265,13 @@ type literal = [
 ]
 [@@deriving sexp_of]
 
-type member_modifier = [
-    `Visi_modi of visibility_modifier
-  | `Static_modi of Token.t (* "static" *)
-  | `Abst_modi of Token.t (* "abstract" *)
-  | `Final_modi of Token.t (* "final" *)
-]
-[@@deriving sexp_of]
-
-type type_constant_ = (
-    [ `Qual_id of qualified_identifier | `Type_cst_ of type_constant_ ]
+type trait_select_clause = (
+    qualified_identifier
   * Token.t (* "::" *)
   * identifier (*tok*)
+  * Token.t (* "insteadof" *)
+  * qualified_identifier
+  * (Token.t (* "," *) * qualified_identifier) list (* zero or more *)
 )
 [@@deriving sexp_of]
 
@@ -274,13 +281,10 @@ type namespace_identifier = [
 ]
 [@@deriving sexp_of]
 
-type trait_select_clause = (
-    qualified_identifier
+type type_constant_ = (
+    [ `Qual_id of qualified_identifier | `Type_cst_ of type_constant_ ]
   * Token.t (* "::" *)
   * identifier (*tok*)
-  * Token.t (* "insteadof" *)
-  * qualified_identifier
-  * (Token.t (* "," *) * qualified_identifier) list (* zero or more *)
 )
 [@@deriving sexp_of]
 
@@ -294,15 +298,15 @@ type xhp_enum_type = (
 )
 [@@deriving sexp_of]
 
-type xhp_close = (Token.t (* "</" *) * xhp_identifier_ * Token.t (* ">" *))
-[@@deriving sexp_of]
-
 type xhp_children_declaration = (
     Token.t (* "children" *)
   * xhp_attribute_expression
   * (Token.t (* "," *) * xhp_attribute_expression) list (* zero or more *)
   * Token.t (* ";" *)
 )
+[@@deriving sexp_of]
+
+type xhp_close = (Token.t (* "</" *) * xhp_identifier_ * Token.t (* ">" *))
 [@@deriving sexp_of]
 
 type keyword = [
@@ -394,14 +398,17 @@ and anonymous_function_expression = (
   * compound_statement
 )
 
-and argument = (
-    [
-        `Inout_modi of Token.t (* "inout" *)
-      | `Vari_modi of Token.t (* "..." *)
-    ]
-      option
-  * expression
-)
+and argument = [
+    `Opt_choice_inout_modi_exp of (
+        [
+            `Inout_modi of Token.t (* "inout" *)
+          | `Vari_modi of Token.t (* "..." *)
+        ]
+          option
+      * expression
+    )
+  | `Semg_vari_id of semgrep_variadic_identifier (*tok*)
+]
 
 and arguments = (
     Token.t (* "(" *)
@@ -1298,10 +1305,10 @@ type async_modifier (* inlined *) = Token.t (* "async" *)
 type final_modifier (* inlined *) = Token.t (* "final" *)
 [@@deriving sexp_of]
 
-type variadic_modifier (* inlined *) = Token.t (* "..." *)
+type ellipsis (* inlined *) = Token.t (* "..." *)
 [@@deriving sexp_of]
 
-type ellipsis (* inlined *) = Token.t (* "..." *)
+type xhp_modifier (* inlined *) = Token.t (* "xhp" *)
 [@@deriving sexp_of]
 
 type backslash (* inlined *) = Token.t (* "\\" *)
@@ -1310,7 +1317,10 @@ type backslash (* inlined *) = Token.t (* "\\" *)
 type inout_modifier (* inlined *) = Token.t (* "inout" *)
 [@@deriving sexp_of]
 
-type xhp_modifier (* inlined *) = Token.t (* "xhp" *)
+type static_modifier (* inlined *) = Token.t (* "static" *)
+[@@deriving sexp_of]
+
+type variadic_modifier (* inlined *) = Token.t (* "..." *)
 [@@deriving sexp_of]
 
 type comment (* inlined *) = Token.t
@@ -1320,9 +1330,6 @@ type abstract_modifier (* inlined *) = Token.t (* "abstract" *)
 [@@deriving sexp_of]
 
 type await_modifier (* inlined *) = Token.t (* "await" *)
-[@@deriving sexp_of]
-
-type static_modifier (* inlined *) = Token.t (* "static" *)
 [@@deriving sexp_of]
 
 type single_parameter (* inlined *) = variable (*tok*)

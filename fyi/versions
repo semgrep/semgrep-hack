@@ -1,6 +1,6 @@
 File: semgrep-grammars/src/tree-sitter-hack/LICENSE
 Git repo name: tree-sitter-hack
-Latest commit in repo: 6f0bf4c09834707202ea0aef3090d880a49b39e7
+Latest commit in repo: b6db7cf9dc191ce44fa18d7076a346da8c3efe28
 Last change in file:
   commit 22cc75a0f850cb496602c976be585cf5cd13b818
   Author: Antonio de Jesus Ochoa Solano <antoniodejesusochoasolano@gmail.com>
@@ -10,7 +10,7 @@ Last change in file:
 ---
 File: semgrep-grammars/src/tree-sitter-hack/grammar.js
 Git repo name: tree-sitter-hack
-Latest commit in repo: 6f0bf4c09834707202ea0aef3090d880a49b39e7
+Latest commit in repo: b6db7cf9dc191ce44fa18d7076a346da8c3efe28
 Last change in file:
   commit fb6d23735499236459cb2b230ca142aa8ee61770
   Author: David Frankel <42774874+frankeld@users.noreply.github.com>
@@ -28,11 +28,11 @@ Last change in file:
 ---
 File: semgrep-grammars/src/semgrep-hack/grammar.js
 Git repo name: ocaml-tree-sitter-semgrep
-Latest commit in repo: 4e91844a54e62312a78caab73d2a7e09a514a175
+Latest commit in repo: 2934e97934dfadcb83b4dd814c7cd4003453e4bb
 Last change in file:
-  commit a4f74751f629a6a9222d59d5a8696fd58ff1d142
+  commit 8565103cc721a90f9c8523f0661ef3e92a8dfec9
   Author: David Frankel <42774874+frankeld@users.noreply.github.com>
-  Date:   Tue Aug 10 17:12:58 2021 -0400
+  Date:   Fri Aug 13 13:55:21 2021 -0400
   
-      [Hack] Extend metavariables
+      Move away from __SEMGREP_EXPRESSION
 ---

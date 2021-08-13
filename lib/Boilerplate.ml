@@ -32,31 +32,6 @@ let map_heredoc_body (env : env) (tok : CST.heredoc_body) =
 let map_semgrep_identifier (env : env) (tok : CST.semgrep_identifier) =
   (* pattern \$[A-Z_][A-Z_0-9]* *) token env tok
 
-let map_variable (env : env) (tok : CST.variable) =
-  (* variable *) token env tok
-
-let map_pat_466b599 (env : env) (tok : CST.pat_466b599) =
-  (* pattern function\s*\( *) token env tok
-
-let map_xhp_class_identifier (env : env) (tok : CST.xhp_class_identifier) =
-  (* pattern :[a-zA-Z_][a-zA-Z0-9_]*([-:][a-zA-Z0-9_]+)* *) token env tok
-
-let map_xhp_category_identifier (env : env) (tok : CST.xhp_category_identifier) =
-  (* pattern %[a-zA-Z_][a-zA-Z0-9_]*([-:][a-zA-Z0-9_]+)* *) token env tok
-
-let map_false_ (env : env) (x : CST.false_) =
-  (match x with
-  | `False_68934a3 tok -> (* "false" *) token env tok
-  | `False_f8320b2 tok -> (* "False" *) token env tok
-  | `FALSE tok -> (* "FALSE" *) token env tok
-  )
-
-let map_pat_b6fe07e (env : env) (tok : CST.pat_b6fe07e) =
-  (* pattern <\?[hH][hH] *) token env tok
-
-let map_xhp_string (env : env) (tok : CST.xhp_string) =
-  (* xhp_string *) token env tok
-
 let map_true_ (env : env) (x : CST.true_) =
   (match x with
   | `True_b326b50 tok -> (* "true" *) token env tok
@@ -64,11 +39,15 @@ let map_true_ (env : env) (x : CST.true_) =
   | `TRUE tok -> (* "TRUE" *) token env tok
   )
 
-let map_identifier (env : env) (tok : CST.identifier) =
-  (* pattern [a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]* *) token env tok
+let map_type_modifier (env : env) (x : CST.type_modifier) =
+  (match x with
+  | `AT tok -> (* "@" *) token env tok
+  | `QMARK tok -> (* "?" *) token env tok
+  | `TILDE tok -> (* "~" *) token env tok
+  )
 
-let map_tok_lcurldollar_pat_0e8e4b6 (env : env) (tok : CST.tok_lcurldollar_pat_0e8e4b6) =
-  (* tok_lcurldollar_pat_0e8e4b6 *) token env tok
+let map_xhp_identifier (env : env) (tok : CST.xhp_identifier) =
+  (* pattern [a-zA-Z_][a-zA-Z0-9_]*([-:][a-zA-Z0-9_]+)* *) token env tok
 
 let map_use_type (env : env) (x : CST.use_type) =
   (match x with
@@ -78,8 +57,43 @@ let map_use_type (env : env) (x : CST.use_type) =
   | `Const tok -> (* "const" *) token env tok
   )
 
+let map_pat_466b599 (env : env) (tok : CST.pat_466b599) =
+  (* pattern function\s*\( *) token env tok
+
+let map_false_ (env : env) (x : CST.false_) =
+  (match x with
+  | `False_68934a3 tok -> (* "false" *) token env tok
+  | `False_f8320b2 tok -> (* "False" *) token env tok
+  | `FALSE tok -> (* "FALSE" *) token env tok
+  )
+
+let map_variable (env : env) (tok : CST.variable) =
+  (* variable *) token env tok
+
+let map_xhp_category_identifier (env : env) (tok : CST.xhp_category_identifier) =
+  (* pattern %[a-zA-Z_][a-zA-Z0-9_]*([-:][a-zA-Z0-9_]+)* *) token env tok
+
+let map_pat_b6fe07e (env : env) (tok : CST.pat_b6fe07e) =
+  (* pattern <\?[hH][hH] *) token env tok
+
+let map_visibility_modifier (env : env) (x : CST.visibility_modifier) =
+  (match x with
+  | `Public tok -> (* "public" *) token env tok
+  | `Prot tok -> (* "protected" *) token env tok
+  | `Priv tok -> (* "private" *) token env tok
+  )
+
+let map_identifier (env : env) (tok : CST.identifier) =
+  (* pattern [a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]* *) token env tok
+
 let map_string_ (env : env) (tok : CST.string_) =
   (* string *) token env tok
+
+let map_xhp_comment (env : env) (tok : CST.xhp_comment) =
+  (* xhp_comment *) token env tok
+
+let map_xhp_string (env : env) (tok : CST.xhp_string) =
+  (* xhp_string *) token env tok
 
 let map_float_ (env : env) (tok : CST.float_) =
   (* float *) token env tok
@@ -90,9 +104,6 @@ let map_integer (env : env) (tok : CST.integer) =
 let map_heredoc_start_newline (env : env) (tok : CST.heredoc_start_newline) =
   (* heredoc_start_newline *) token env tok
 
-let map_xhp_comment (env : env) (tok : CST.xhp_comment) =
-  (* xhp_comment *) token env tok
-
 let map_scope_identifier (env : env) (x : CST.scope_identifier) =
   (match x with
   | `Self tok -> (* "self" *) token env tok
@@ -100,12 +111,8 @@ let map_scope_identifier (env : env) (x : CST.scope_identifier) =
   | `Static tok -> (* "static" *) token env tok
   )
 
-let map_visibility_modifier (env : env) (x : CST.visibility_modifier) =
-  (match x with
-  | `Public tok -> (* "public" *) token env tok
-  | `Prot tok -> (* "protected" *) token env tok
-  | `Priv tok -> (* "private" *) token env tok
-  )
+let map_semgrep_variadic_identifier (env : env) (tok : CST.semgrep_variadic_identifier) =
+  (* pattern \$\.\.\.[A-Z_][A-Z_0-9]* *) token env tok
 
 let map_collection_type (env : env) (x : CST.collection_type) =
   (match x with
@@ -117,15 +124,11 @@ let map_collection_type (env : env) (x : CST.collection_type) =
   | `Keyset tok -> (* "keyset" *) token env tok
   )
 
-let map_xhp_identifier (env : env) (tok : CST.xhp_identifier) =
-  (* pattern [a-zA-Z_][a-zA-Z0-9_]*([-:][a-zA-Z0-9_]+)* *) token env tok
+let map_tok_lcurldollar_pat_0e8e4b6 (env : env) (tok : CST.tok_lcurldollar_pat_0e8e4b6) =
+  (* tok_lcurldollar_pat_0e8e4b6 *) token env tok
 
-let map_type_modifier (env : env) (x : CST.type_modifier) =
-  (match x with
-  | `AT tok -> (* "@" *) token env tok
-  | `QMARK tok -> (* "?" *) token env tok
-  | `TILDE tok -> (* "~" *) token env tok
-  )
+let map_xhp_class_identifier (env : env) (tok : CST.xhp_class_identifier) =
+  (* pattern :[a-zA-Z_][a-zA-Z0-9_]*([-:][a-zA-Z0-9_]+)* *) token env tok
 
 let map_null (env : env) (x : CST.null) =
   (match x with
@@ -165,6 +168,36 @@ let map_empty_statement (env : env) (x : CST.empty_statement) =
   | `SEMI tok -> (* ";" *) token env tok
   | `Ellips tok -> (* "..." *) token env tok
   )
+
+let map_trait_alias_clause (env : env) ((v1, v2, v3) : CST.trait_alias_clause) =
+  let v1 =
+    (* pattern [a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]* *) token env v1
+  in
+  let v2 = (* "as" *) token env v2 in
+  let v3 =
+    (match v3 with
+    | `Visi_modi_opt_id (v1, v2) ->
+        let v1 = map_visibility_modifier env v1 in
+        let v2 =
+          (match v2 with
+          | Some tok ->
+              (* pattern [a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]* *) token env tok
+          | None -> todo env ())
+        in
+        todo env (v1, v2)
+    | `Opt_visi_modi_id (v1, v2) ->
+        let v1 =
+          (match v1 with
+          | Some x -> map_visibility_modifier env x
+          | None -> todo env ())
+        in
+        let v2 =
+          (* pattern [a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]* *) token env v2
+        in
+        todo env (v1, v2)
+    )
+  in
+  todo env (v1, v2, v3)
 
 let map_semgrep_extended_identifier (env : env) (x : CST.semgrep_extended_identifier) =
   (match x with
@@ -215,48 +248,18 @@ let map_anon_choice_str_d42aa42 (env : env) (x : CST.anon_choice_str_d42aa42) =
   | `Int tok -> (* integer *) token env tok
   )
 
-let map_trait_alias_clause (env : env) ((v1, v2, v3) : CST.trait_alias_clause) =
-  let v1 =
-    (* pattern [a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]* *) token env v1
-  in
-  let v2 = (* "as" *) token env v2 in
-  let v3 =
-    (match v3 with
-    | `Visi_modi_opt_id (v1, v2) ->
-        let v1 = map_visibility_modifier env v1 in
-        let v2 =
-          (match v2 with
-          | Some tok ->
-              (* pattern [a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]* *) token env tok
-          | None -> todo env ())
-        in
-        todo env (v1, v2)
-    | `Opt_visi_modi_id (v1, v2) ->
-        let v1 =
-          (match v1 with
-          | Some x -> map_visibility_modifier env x
-          | None -> todo env ())
-        in
-        let v2 =
-          (* pattern [a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]* *) token env v2
-        in
-        todo env (v1, v2)
-    )
-  in
-  todo env (v1, v2, v3)
+let map_member_modifier (env : env) (x : CST.member_modifier) =
+  (match x with
+  | `Visi_modi x -> map_visibility_modifier env x
+  | `Static_modi tok -> (* "static" *) token env tok
+  | `Abst_modi tok -> (* "abstract" *) token env tok
+  | `Final_modi tok -> (* "final" *) token env tok
+  )
 
 let map_class_modifier (env : env) (x : CST.class_modifier) =
   (match x with
   | `Abst_modi tok -> (* "abstract" *) token env tok
   | `Final_modi tok -> (* "final" *) token env tok
-  )
-
-let map_xhp_identifier_ (env : env) (x : CST.xhp_identifier_) =
-  (match x with
-  | `Xhp_id tok ->
-      (* pattern [a-zA-Z_][a-zA-Z0-9_]*([-:][a-zA-Z0-9_]+)* *) token env tok
-  | `Xhp_class_id tok ->
-      (* pattern :[a-zA-Z_][a-zA-Z0-9_]*([-:][a-zA-Z0-9_]+)* *) token env tok
   )
 
 let rec map_xhp_attribute_expression (env : env) (x : CST.xhp_attribute_expression) =
@@ -296,6 +299,14 @@ let rec map_xhp_attribute_expression (env : env) (x : CST.xhp_attribute_expressi
       todo env (v1, v2, v3, v4)
   )
 
+let map_xhp_identifier_ (env : env) (x : CST.xhp_identifier_) =
+  (match x with
+  | `Xhp_id tok ->
+      (* pattern [a-zA-Z_][a-zA-Z0-9_]*([-:][a-zA-Z0-9_]+)* *) token env tok
+  | `Xhp_class_id tok ->
+      (* pattern :[a-zA-Z_][a-zA-Z0-9_]*([-:][a-zA-Z0-9_]+)* *) token env tok
+  )
+
 let map_primitive_type (env : env) (x : CST.primitive_type) =
   (match x with
   | `Bool tok -> (* "bool" *) token env tok
@@ -321,40 +332,6 @@ let map_literal (env : env) (x : CST.literal) =
   | `Null x -> map_null env x
   )
 
-let map_member_modifier (env : env) (x : CST.member_modifier) =
-  (match x with
-  | `Visi_modi x -> map_visibility_modifier env x
-  | `Static_modi tok -> (* "static" *) token env tok
-  | `Abst_modi tok -> (* "abstract" *) token env tok
-  | `Final_modi tok -> (* "final" *) token env tok
-  )
-
-let rec map_type_constant_ (env : env) ((v1, v2, v3) : CST.type_constant_) =
-  let v1 =
-    (match v1 with
-    | `Qual_id x -> map_qualified_identifier env x
-    | `Type_cst_ x -> map_type_constant_ env x
-    )
-  in
-  let v2 = (* "::" *) token env v2 in
-  let v3 =
-    (* pattern [a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]* *) token env v3
-  in
-  todo env (v1, v2, v3)
-
-let map_namespace_identifier (env : env) (x : CST.namespace_identifier) =
-  (match x with
-  | `Qual_id_opt_back (v1, v2) ->
-      let v1 = map_qualified_identifier env v1 in
-      let v2 =
-        (match v2 with
-        | Some tok -> (* "\\" *) token env tok
-        | None -> todo env ())
-      in
-      todo env (v1, v2)
-  | `Back tok -> (* "\\" *) token env tok
-  )
-
 let map_trait_select_clause (env : env) ((v1, v2, v3, v4, v5, v6) : CST.trait_select_clause) =
   let v1 = map_qualified_identifier env v1 in
   let v2 = (* "::" *) token env v2 in
@@ -371,6 +348,32 @@ let map_trait_select_clause (env : env) ((v1, v2, v3, v4, v5, v6) : CST.trait_se
     ) v6
   in
   todo env (v1, v2, v3, v4, v5, v6)
+
+let map_namespace_identifier (env : env) (x : CST.namespace_identifier) =
+  (match x with
+  | `Qual_id_opt_back (v1, v2) ->
+      let v1 = map_qualified_identifier env v1 in
+      let v2 =
+        (match v2 with
+        | Some tok -> (* "\\" *) token env tok
+        | None -> todo env ())
+      in
+      todo env (v1, v2)
+  | `Back tok -> (* "\\" *) token env tok
+  )
+
+let rec map_type_constant_ (env : env) ((v1, v2, v3) : CST.type_constant_) =
+  let v1 =
+    (match v1 with
+    | `Qual_id x -> map_qualified_identifier env x
+    | `Type_cst_ x -> map_type_constant_ env x
+    )
+  in
+  let v2 = (* "::" *) token env v2 in
+  let v3 =
+    (* pattern [a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]* *) token env v3
+  in
+  todo env (v1, v2, v3)
 
 let map_xhp_enum_type (env : env) ((v1, v2, v3, v4, v5, v6) : CST.xhp_enum_type) =
   let v1 = (* "enum" *) token env v1 in
@@ -391,12 +394,6 @@ let map_xhp_enum_type (env : env) ((v1, v2, v3, v4, v5, v6) : CST.xhp_enum_type)
   let v6 = (* "}" *) token env v6 in
   todo env (v1, v2, v3, v4, v5, v6)
 
-let map_xhp_close (env : env) ((v1, v2, v3) : CST.xhp_close) =
-  let v1 = (* "</" *) token env v1 in
-  let v2 = map_xhp_identifier_ env v2 in
-  let v3 = (* ">" *) token env v3 in
-  todo env (v1, v2, v3)
-
 let map_xhp_children_declaration (env : env) ((v1, v2, v3, v4) : CST.xhp_children_declaration) =
   let v1 = (* "children" *) token env v1 in
   let v2 = map_xhp_attribute_expression env v2 in
@@ -409,6 +406,12 @@ let map_xhp_children_declaration (env : env) ((v1, v2, v3, v4) : CST.xhp_childre
   in
   let v4 = (* ";" *) token env v4 in
   todo env (v1, v2, v3, v4)
+
+let map_xhp_close (env : env) ((v1, v2, v3) : CST.xhp_close) =
+  let v1 = (* "</" *) token env v1 in
+  let v2 = map_xhp_identifier_ env v2 in
+  let v3 = (* ">" *) token env v3 in
+  todo env (v1, v2, v3)
 
 let map_keyword (env : env) (x : CST.keyword) =
   (match x with
@@ -569,18 +572,23 @@ and map_anonymous_function_expression (env : env) ((v1, v2, v3, v4, v5, v6) : CS
   let v6 = map_compound_statement env v6 in
   todo env (v1, v2, v3, v4, v5, v6)
 
-and map_argument (env : env) ((v1, v2) : CST.argument) =
-  let v1 =
-    (match v1 with
-    | Some x ->
-        (match x with
-        | `Inout_modi tok -> (* "inout" *) token env tok
-        | `Vari_modi tok -> (* "..." *) token env tok
-        )
-    | None -> todo env ())
-  in
-  let v2 = map_expression env v2 in
-  todo env (v1, v2)
+and map_argument (env : env) (x : CST.argument) =
+  (match x with
+  | `Opt_choice_inout_modi_exp (v1, v2) ->
+      let v1 =
+        (match v1 with
+        | Some x ->
+            (match x with
+            | `Inout_modi tok -> (* "inout" *) token env tok
+            | `Vari_modi tok -> (* "..." *) token env tok
+            )
+        | None -> todo env ())
+      in
+      let v2 = map_expression env v2 in
+      todo env (v1, v2)
+  | `Semg_vari_id tok ->
+      (* pattern \$\.\.\.[A-Z_][A-Z_0-9]* *) token env tok
+  )
 
 and map_arguments (env : env) ((v1, v2, v3) : CST.arguments) =
   let v1 = (* "(" *) token env v1 in
