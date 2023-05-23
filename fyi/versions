@@ -2,37 +2,43 @@ File: semgrep-grammars/src/tree-sitter-hack/LICENSE
 Git repo name: tree-sitter-hack
 Latest commit in repo: b6db7cf9dc191ce44fa18d7076a346da8c3efe28
 Last change in file:
-  commit 22cc75a0f850cb496602c976be585cf5cd13b818
-  Author: Antonio de Jesus Ochoa Solano <antoniodejesusochoasolano@gmail.com>
-  Date:   Sat Jul 18 18:48:30 2020 -0700
+  commit b6db7cf9dc191ce44fa18d7076a346da8c3efe28
+  Author: David Frankel <42774874+frankeld@users.noreply.github.com>
+  Date:   Wed Aug 11 13:29:25 2021 -0400
   
-      Add LICENSE
+      Track corpus (#27)
+      
+      - Tracks corpus file
+        - Reasoning: Downstream, ocaml-tree-sitter assumes that corpus tests have been committed to the tree-sitter repo. To test against regressions, it symlinks and runs the tests. See https://github.com/returntocorp/ocaml-tree-sitter-semgrep/blob/cabfe800af79188f69bd7b4380cf54274f6db790/lang/semgrep-grammars/src/prep.common#L27-L36. We want these tests to run.
+      - Ensures build files are up to date in PRs
+        - Reasoning: Will catch any corpus or tree-sitter gen discrepancies
+      
+      To verify that action is working, reference purposefully failed actions below in 45633b0 (see https://github.com/slackhq/tree-sitter-hack/runs/3284730037).
 ---
 File: semgrep-grammars/src/tree-sitter-hack/grammar.js
 Git repo name: tree-sitter-hack
 Latest commit in repo: b6db7cf9dc191ce44fa18d7076a346da8c3efe28
 Last change in file:
-  commit fb6d23735499236459cb2b230ca142aa8ee61770
+  commit b6db7cf9dc191ce44fa18d7076a346da8c3efe28
   Author: David Frankel <42774874+frankeld@users.noreply.github.com>
-  Date:   Mon Aug 2 12:56:32 2021 -0400
+  Date:   Wed Aug 11 13:29:25 2021 -0400
   
-      Improve XHP feature documentation and testing (#23)
+      Track corpus (#27)
       
-      * Add deprecated XHP feature documentation and tests
+      - Tracks corpus file
+        - Reasoning: Downstream, ocaml-tree-sitter assumes that corpus tests have been committed to the tree-sitter repo. To test against regressions, it symlinks and runs the tests. See https://github.com/returntocorp/ocaml-tree-sitter-semgrep/blob/cabfe800af79188f69bd7b4380cf54274f6db790/lang/semgrep-grammars/src/prep.common#L27-L36. We want these tests to run.
+      - Ensures build files are up to date in PRs
+        - Reasoning: Will catch any corpus or tree-sitter gen discrepancies
       
-      * Add XHP spread expression tests
-      
-      * Fixup spelling and formatting
-      
-      * Update xhp-spread.hack
+      To verify that action is working, reference purposefully failed actions below in 45633b0 (see https://github.com/slackhq/tree-sitter-hack/runs/3284730037).
 ---
 File: semgrep-grammars/src/semgrep-hack/grammar.js
 Git repo name: ocaml-tree-sitter-semgrep
-Latest commit in repo: 2934e97934dfadcb83b4dd814c7cd4003453e4bb
+Latest commit in repo: c688b0e428c5630719eabb883b9321013411f079
 Last change in file:
-  commit 8565103cc721a90f9c8523f0661ef3e92a8dfec9
-  Author: David Frankel <42774874+frankeld@users.noreply.github.com>
-  Date:   Fri Aug 13 13:55:21 2021 -0400
+  commit 81de9630662b9226eaf3090ed598d11d9a7d111d
+  Author: Martin Jambon <martin@mjambon.com>
+  Date:   Tue Oct 26 16:16:57 2021 -0700
   
-      Move away from __SEMGREP_EXPRESSION
+      Fix hack/hacklang naming issue
 ---
