@@ -1638,6 +1638,6 @@ type xhp_open_close (* inlined *) = (
   * Token.t (* "/>" *)
 )
 
-type extra = Comment of Loc.t * comment
+type extra = [ `Comment of Loc.t * comment ]
 
 type extras = extra list
